@@ -42,15 +42,9 @@ class PhotoViewer extends Component {
     }
   }
 
-  render(){
-    console.log('index:', this.state.currentPhotoIndex);
-    
+  render(){    
     return(
       <div className="photo-viewer-parent">
-          <div className={`btn prev ${this.state.currentPhotoIndex === 0 ? 'btn-disabled' : ''}`}
-          onClick={ this.prevPhotoTapped }>
-          Prev
-        </div>
         <div className="photo-view">
           {this.props.photoData.length > 0 ?
             this.renderPhotos(this.props.photoData, this.state.currentPhotoIndex)
@@ -58,10 +52,16 @@ class PhotoViewer extends Component {
             this.rednerPlaceholder()
           }
         </div>
-        <div 
-          className={`btn next ${this.state.currentPhotoIndex === this.props.photoData.length -1 ? 'btn-disabled' : ''}`}
-          onClick={ this.nextPhotoTapped }>
-          Next
+        <div className="button-group">
+          <div className={`btn prev ${this.state.currentPhotoIndex === 0 ? 'btn-disabled' : 'btn-active'}`}
+            onClick={ this.prevPhotoTapped }>
+            Prev
+          </div>
+          <div 
+            className={`btn next ${this.state.currentPhotoIndex === this.props.photoData.length - 1 || this.props.photoData.length === 0 ? 'btn-disabled' : 'btn-active'}`}
+            onClick={ this.nextPhotoTapped }>
+            Next
+          </div>
         </div>
       </div>
     )
