@@ -11,6 +11,25 @@ class PhotoViewer extends Component {
 
     this.prevPhotoTapped = this.prevPhotoTapped.bind(this);
     this.nextPhotoTapped = this.nextPhotoTapped.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onKeyDown(e) {
+    if (e.keyCode === 37) {
+      e.preventDefault();
+      this.prevPhotoTapped();
+    } else if (e.keyCode === 39) {
+      e.preventDefault();
+      this.nextPhotoTapped();
+    }
   }
 
   renderPhotos(photos, index) {
