@@ -7,10 +7,13 @@ class SearchForm extends Component {
     super(props);
 
     this.state = {
-      city: ''
+      displayErrors: false,
+      city: '',
+      photoData: []
     }
 
     this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   onInputChange(event) {
@@ -19,27 +22,32 @@ class SearchForm extends Component {
     });
   }
 
-  formSubmit(event) {
+  onFormSubmit(event) {
     event.preventDefault();
 
     if(!event.target.checkValidity()) {
-      this.setState({ displayErrors: true });
+      this.setState({
+        displayErrors: true
+      });
       return;
     }
     
     event.target.blur();
 
-    const url = ``;
+    const API_KEY = process.env.REACT_APP_FLICKR_KEY;    
+    const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${ API_KEY }&text=${ this.state.city.split(' ').join('+') }&format=json&nojsoncallback=1`;
+    
     axios.get(url)
     .then(response => {
-      console.log("Response: ", response);
+      console.log("Response: ", response, "photos:", response.data.photos.photo);
+      this.props.onPhotoDataReceived(response.data.photos.photo);
     })
     .catch(error => {
-      console.log('Error searching players:', error);
+      console.log('Error searching cities:', error);
     });
 
     this.setState({
-      player: '', 
+      city: '', 
       displayErrors: false
     });
   }
@@ -47,7 +55,7 @@ class SearchForm extends Component {
   render(){
     return(
       <div className="form-group">
-        <form onSubmit={ this.formSubmit }>
+        <form onSubmit={ this.onFormSubmit }>
           <input type="text" name='city' value={ this.state.city } onChange={ this.onInputChange } className="form-input"></input>
           <input type="submit" className="form-button"></input>
         </form>
