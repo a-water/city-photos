@@ -46,7 +46,7 @@ class PhotoViewer extends Component {
   }
 
   prevPhotoTapped() {
-    if(this.state.currentPhotoIndex - 1 > 0) {
+    if(this.state.currentPhotoIndex - 1 >= 0) {
       this.setState({
         currentPhotoIndex: this.state.currentPhotoIndex -1
       });
